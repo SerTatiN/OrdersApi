@@ -1,9 +1,20 @@
 package org.top.ordersapi.model.entity;
 
+import jakarta.persistence.*;
+
+
+
 //сущность "Продукт"
+@Entity
+@Table(name="item_t")
 public class Item {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(nullable=false, length=200)
     private String itemName;
+    @Column(nullable=false)
     private Long itemArticle;
 
     //конструктор по умолчанию
