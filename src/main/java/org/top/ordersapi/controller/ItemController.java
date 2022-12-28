@@ -33,16 +33,29 @@ public class ItemController {
         return daoItem.save(item);
     }
 
-//    @PostMapping("/update")
-//    public Item update(@RequestParam Integer id, @RequestParam String iName, @RequestParam Long iArticle){
-//        Item item=null;
-//        if (!(daoItem.findById(id).isPresent())) {
-//
-//        }
-//
-//
-//        return daoItem.update(item);
-//    }
+    @PostMapping("/update")
+    public Item update(@RequestParam Integer id, @RequestParam (required = false) String iName,
+                       @RequestParam (required = false) Long iArticle){
+
+        if (!(daoItem.findById(id).isEmpty())) {
+            Item item = daoItem.findById(id).get();
+
+            if (iName != null) {
+                item.setItemName(iName);
+            }
+            if (iArticle != null) {
+                item.setItemArticle(iArticle);
+            }
+            return daoItem.update(item);
+        }
+        return daoItem.update(new Item());
+    }
+
+    @GetMapping("/delete")
+    public Item delete (@RequestParam Integer id){
+
+        return  daoItem.delete(id);
+    }
 
     @GetMapping("/ping")
     public String ping() {

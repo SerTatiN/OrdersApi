@@ -2,6 +2,7 @@ package org.top.ordersapi.model.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
 
 
 //сущность "Продукт"
@@ -17,6 +18,8 @@ public class Item {
     @Column(nullable=false)
     private Long itemArticle;
 
+    @OneToMany(mappedBy="item", cascade = CascadeType.ALL)
+    private Set<OrderItems> orserItems;
     //конструктор по умолчанию
     public Item(){
         id = -1;

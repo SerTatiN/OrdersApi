@@ -31,11 +31,19 @@ public class DbDaoItem implements IDaoItem{
 
     @Override
     public Item update(Item item) {
-        return repository.update(item);
+        if (repository.findById(item.getId()).isPresent()) {
+            return repository.save(item);
+        }
+        return null;
     }
 
     @Override
     public Item delete(Integer id) {
+        if (repository.findById(id).isPresent()) {
+            Item item = repository.findById(id).get();
+            repository.deleteById(id);
+            return item;
+        }
         return null;
     }
 }
