@@ -31,10 +31,7 @@ public class DbDaoItem implements IDaoItem{
 
     @Override
     public Item update(Item item) {
-        if (repository.findById(item.getId()).isPresent()) {
             return repository.save(item);
-        }
-        return null;
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.top.ordersapi.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.top.ordersapi.model.dao.item.IDaoItem;
+import org.top.ordersapi.model.dao.orderItems.IDaoOrderItems;
 import org.top.ordersapi.model.entity.Item;
 
 import java.util.List;
@@ -15,29 +16,39 @@ public class ItemController {
 
     @Autowired
     private IDaoItem daoItem;
+    @Autowired
+    private IDaoOrderItems daoOrderItems;
 
     @GetMapping("/all")
     public List<Item> all(){
+        System.out.println();
         return daoItem.findAll();
     }
     @GetMapping("/get")
     public Optional<Item> get(@RequestParam Integer id){
+        System.out.println(daoItem.findById(id));
         return daoItem.findById(id);
     }
 
     @PostMapping("/save")
     public Item save(@RequestParam String iName, @RequestParam Long iArticle){
-        Item item = new Item();
-        item.setItemName(iName);
-        item.setItemArticle(iArticle);
-        return daoItem.save(item);
+
+        if (iName != null) {
+            Item item = new Item();
+            item.setItemName(iName);
+            if (iArticle != null) {
+                item.setItemArticle(iArticle);
+            }
+            return daoItem.save(item);
+        }
+        return null;
     }
 
     @PostMapping("/update")
     public Item update(@RequestParam Integer id, @RequestParam (required = false) String iName,
                        @RequestParam (required = false) Long iArticle){
 
-        if (!(daoItem.findById(id).isEmpty())) {
+        if (daoItem.findById(id).isPresent()) {
             Item item = daoItem.findById(id).get();
 
             if (iName != null) {
@@ -48,7 +59,7 @@ public class ItemController {
             }
             return daoItem.update(item);
         }
-        return daoItem.update(new Item());
+        return null;
     }
 
     @GetMapping("/delete")

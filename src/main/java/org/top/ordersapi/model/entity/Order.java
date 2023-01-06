@@ -1,7 +1,12 @@
 package org.top.ordersapi.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
+//Сущность "Заказ"
 @Entity
 @Table(name="order_t")
 public class Order {
@@ -12,21 +17,30 @@ public class Order {
     @Column(nullable = false)
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name="client_t", nullable = false)
+    @ManyToOne   //много заказов - один клиент
+    @JoinColumn(name="client_id", nullable = false)
     private Client client;
 
-    public Order(Integer id) {
-        this.id = id;
-    }
+    //один заказ - много заказ-товаров, ссылающихся на него
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private Set<OrderItems> orderItems; //= new HashSet<>();
 
+    public Order() {
+        id = -1;
+        description = "nodesc";
+        client = null;
+        orderItems = new HashSet<>();
+    }
     public Order(String description, Client client) {
         this.description = description;
         this.client = client;
     }
 
-    public Order() {
-
+    public Order(Integer id, String description, Client client, Set<OrderItems> orderItems) {
+        this.id = id;
+        this.description = description;
+        this.client = client;
+        this.orderItems = orderItems;
     }
 
     public Integer getId() {
@@ -44,7 +58,7 @@ public class Order {
     public void setDescription(String description) {
         this.description = description;
     }
-
+    @JsonIgnore
     public Client getClient() {
         return client;
     }
@@ -53,8 +67,18 @@ public class Order {
         this.client = client;
     }
 
+    public Set<OrderItems> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(Set<OrderItems> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+
     @Override
     public String toString() {
-        return id + " / " + description+ " / "+ client;
+        return id + " / " + description+ " / "+ client+
+                " / " + orderItems;
     }
 }

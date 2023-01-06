@@ -2,6 +2,7 @@ package org.top.ordersapi.model.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -19,18 +20,33 @@ public class Item {
     private Long itemArticle;
 
     @OneToMany(mappedBy="item", cascade = CascadeType.ALL)
-    private Set<OrderItems> orserItems;
+    private Set<OrderItems> orderItems;
+
     //конструктор по умолчанию
     public Item(){
         id = -1;
         itemName = "undefined";
         itemArticle = -1L;
+        orderItems = new HashSet<>();
     }
 
+    public Item(Integer id, String name, Long article, OrderItems ordItems){
+        this.id = id;
+        this.itemName = name;
+        this.itemArticle = article;
+        this.orderItems.add(ordItems);
+    }
     public Item(Integer id, String name, Long article){
         this.id = id;
         this.itemName = name;
         this.itemArticle = article;
+        this.orderItems = null;
+    }
+    public Item(Integer id, String itemName, Long itemArticle, Set<OrderItems> orderItems) {
+        this.id = id;
+        this.itemName = itemName;
+        this.itemArticle = itemArticle;
+        this.orderItems = orderItems;
     }
 
     public Integer getId() {
@@ -57,9 +73,20 @@ public class Item {
         this.itemArticle = itemArticle;
     }
 
+    public Set<OrderItems> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(Set<OrderItems> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+
+
     @Override
     public String toString(){
-        return id + " / " + itemName + " / " + itemArticle;
+        return id + " / " + itemName + " / " + itemArticle +
+                " / " + orderItems;
     }
 
 }
