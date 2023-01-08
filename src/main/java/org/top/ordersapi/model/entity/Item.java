@@ -22,20 +22,24 @@ public class Item {
     @OneToMany(mappedBy="item", cascade = CascadeType.ALL)
     private Set<OrderItems> orderItems;
 
+    @Column(nullable=false)
+    private Integer price;
+
     //конструктор по умолчанию
     public Item(){
         id = -1;
         itemName = "undefined";
         itemArticle = -1L;
         orderItems = new HashSet<>();
+        price = 0;
     }
 
-    public Item(Integer id, String name, Long article, OrderItems ordItems){
-        this.id = id;
-        this.itemName = name;
-        this.itemArticle = article;
-        this.orderItems.add(ordItems);
-    }
+//    public Item(Integer id, String name, Long article, OrderItems ordItems){
+//        this.id = id;
+//        this.itemName = name;
+//        this.itemArticle = article;
+//        this.orderItems.add(ordItems);
+//    }
     public Item(Integer id, String name, Long article){
         this.id = id;
         this.itemName = name;
@@ -81,7 +85,13 @@ public class Item {
         this.orderItems = orderItems;
     }
 
+    public Integer getPrice() {
+        return price;
+    }
 
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
 
     @Override
     public String toString(){

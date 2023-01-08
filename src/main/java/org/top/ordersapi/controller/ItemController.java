@@ -31,13 +31,17 @@ public class ItemController {
     }
 
     @PostMapping("/save")
-    public Item save(@RequestParam String iName, @RequestParam Long iArticle){
+    public Item save(@RequestParam String iName, @RequestParam Long iArticle,
+                     @RequestParam (required = false) Integer price){
 
         if (iName != null) {
             Item item = new Item();
             item.setItemName(iName);
             if (iArticle != null) {
                 item.setItemArticle(iArticle);
+            }
+            if (price != null) {
+                item.setPrice(price);
             }
             return daoItem.save(item);
         }
@@ -46,7 +50,8 @@ public class ItemController {
 
     @PostMapping("/update")
     public Item update(@RequestParam Integer id, @RequestParam (required = false) String iName,
-                       @RequestParam (required = false) Long iArticle){
+                       @RequestParam (required = false) Long iArticle,
+                       @RequestParam (required = false) Integer price){
 
         if (daoItem.findById(id).isPresent()) {
             Item item = daoItem.findById(id).get();
@@ -56,6 +61,9 @@ public class ItemController {
             }
             if (iArticle != null) {
                 item.setItemArticle(iArticle);
+            }
+            if (price != null) {
+                item.setPrice(price);
             }
             return daoItem.update(item);
         }

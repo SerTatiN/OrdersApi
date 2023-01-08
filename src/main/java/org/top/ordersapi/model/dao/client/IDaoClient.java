@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IDaoClient extends IDaoBase<Client> {
+
 //    List<Client> findAll(); // получить все объекты
 //    Optional<Client> findById(Integer id);      // получить объект по id
 //    Client save(Client client);  //сохранить
